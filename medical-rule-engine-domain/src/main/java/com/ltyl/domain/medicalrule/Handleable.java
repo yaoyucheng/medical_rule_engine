@@ -1,7 +1,8 @@
 package com.ltyl.domain.medicalrule;
 
 import com.ltyl.domain.medicalrule.data.MedicalData;
-import com.ltyl.domain.medicalrule.external.ExternalMedicalRule;
+
+import java.util.List;
 
 /**
  * @author yuchengyao
@@ -15,4 +16,12 @@ public interface Handleable {
      * @return
      */
     MedicalRuleResult dealWithItem(MedicalData medicalData);
+
+    /**
+     * 处理结果
+     *
+     * @param medicalRuleResultList
+     * @return
+     */
+    List<MedicalRuleResult> dealWithMedicalRuleResult(List<MedicalRuleResult> medicalRuleResultList);
 }

@@ -2,6 +2,8 @@ package com.ltyl.medicalrule.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * 药品信息
  *
@@ -9,4 +11,9 @@ import lombok.Data;
  */
 @Data
 public class DrugInformationQry extends MedicalItemQry{
+
+    /**
+     * 药品计量
+     */
+    BigDecimal measure;
 }

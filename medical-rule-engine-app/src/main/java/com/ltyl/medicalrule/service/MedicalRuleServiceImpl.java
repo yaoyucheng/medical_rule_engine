@@ -8,6 +8,7 @@ import com.ltyl.medicalrule.api.MedicalRuleService;
 import com.ltyl.medicalrule.command.MedicalDataSplitExe;
 import com.ltyl.medicalrule.command.MedicalRuleMatchExe;
 import com.ltyl.medicalrule.command.MedicalRuleResultDealWithExe;
+import com.ltyl.medicalrule.convertor.MedicalRuleResultConvertor;
 import com.ltyl.medicalrule.dto.MedicalActionBeforeQry;
 import com.ltyl.medicalrule.dto.clientobject.MedicalActionBeforeCO;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,6 @@ public class MedicalRuleServiceImpl implements MedicalRuleService {
 
         List<MedicalRuleResult> execute = medicalRuleResultDealWithExe.execute(medicalRuleResultList);
 
-        //  TODO:转换结果
-        return null;
+        return MultiResponse.of(MedicalRuleResultConvertor.toMedicalActionBeforeCOList(execute));
     }
 }

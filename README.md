@@ -80,3 +80,13 @@
 6、诊疗项目与住院天数
 
 > 需要参数：诊疗项目code，住院天数
+
+
+## 规则需求完计划
+
+|  业务项关系  | 实现 | DB数据结构 | 完成情况 | 
+|  ----  | ----  | ----| ----|
+| 药品_诊断  | ExternalMedicalRule | 数据库反向枚举  | √ |
+| 药品_医嘱  | ExternalMedicalRule | 数据库反向枚举  | √ |
+| 诊疗项目_诊断  | ExternalMedicalRule | 数据库反向枚举  | √ |
+| 诊疗项目_医嘱  | ExternalMedicalRule | 数据库反向枚举  | √ |

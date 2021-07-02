@@ -13,7 +13,7 @@ public class MedicalRuleResult {
     /**
      * 是否违规
      */
-    private boolean isViolation = false;
+    private Boolean violation = false;
 
     /**
      * 项目code
@@ -30,28 +30,52 @@ public class MedicalRuleResult {
     private String receiptMessage;
 
     /**
+     * 违规类型
+     */
+    private String limitType;
+
+    /**
      * 违规封装
      *
      * @return
      */
-    public static MedicalRuleResult violation(MedicalRuleResult medicalRuleResult) {
+    public static MedicalRuleResult violation(
+            String itemCode,
+            String relatedItemCode,
+            String receiptMessage,
+            String limitType) {
         return MedicalRuleResult.builder()
-                .itemCode(medicalRuleResult.getItemCode())
-                .relatedItemCode(medicalRuleResult.getRelatedItemCode())
-                .receiptMessage(medicalRuleResult.getReceiptMessage())
-                .isViolation(true).build();
+                .itemCode(itemCode)
+                .relatedItemCode(relatedItemCode)
+                .receiptMessage(receiptMessage)
+                .limitType(limitType)
+                .violation(true)
+                .build();
     }
+
 
     /**
      * 无违规封装
      *
      * @return
      */
-    public static MedicalRuleResult noViolation() {
-        return MedicalRuleResult.builder().build();
+    public static MedicalRuleResult noViolation(
+            String itemCode,
+            String relatedItemCode,
+            String receiptMessage,
+            String limitType) {
+
+        return MedicalRuleResult.builder()
+                .itemCode(itemCode)
+                .relatedItemCode(relatedItemCode)
+                .receiptMessage(receiptMessage)
+                .limitType(limitType)
+                .violation(false)
+                .build();
     }
 
     public static boolean isViolation(MedicalRuleResult medicalRuleResult) {
-        return medicalRuleResult.isViolation;
+        return medicalRuleResult.violation;
     }
+
 }

@@ -1,5 +1,7 @@
 package com.ltyl.medicalrule.command;
 
+import com.ltyl.domain.medicalrule.MedicalRuleItemEnum;
+import com.ltyl.domain.medicalrule.data.DrugProportionMedicalRuleData;
 import com.ltyl.domain.medicalrule.data.ExternalMedicalRuleData;
 import com.ltyl.domain.medicalrule.data.MedicalData;
 import com.ltyl.medicalrule.dto.DiagnosticInformationQry;
@@ -7,6 +9,7 @@ import com.ltyl.medicalrule.dto.DrugInformationQry;
 import com.ltyl.medicalrule.dto.MedicalActionBeforeQry;
 import com.ltyl.medicalrule.dto.MedicalProjectInformationQry;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,13 +52,21 @@ public class MedicalDataSplitExe {
 
         drugInformationQryList.forEach(x -> {
 
-            //  药品_药品
-            medicalDataList.addAll(buildExternalMedicalRuleData(x.getCode(), (DrugInformationQry[]) medicalActionBeforeQry.getDrugInformationQryList().toArray()));
+            //  药品_药品_比例
+            medicalDataList.addAll(
+                    buildExternalMedicalRuleData(
+                            x,
+                            MedicalRuleItemEnum.DRUG_DRUG_PROPORTION,
+                            medicalActionBeforeQry.getDrugInformationQryList().toArray(new DrugInformationQry[medicalActionBeforeQry.getDrugInformationQryList().size()])));
 
             //  药品_诊断
-            medicalDataList.addAll(buildExternalMedicalRuleData(x.getCode(), (DiagnosticInformationQry[]) medicalActionBeforeQry.getDiagnosticInformationQry().toArray()));
+            medicalDataList.addAll(
+                    buildExternalMedicalRuleData(
+                            x.getCode(),
+                            MedicalRuleItemEnum.DRUG_DIAGNOSTIC,
+                            medicalActionBeforeQry.getDiagnosticInformationQryList().toArray(new DiagnosticInformationQry[medicalActionBeforeQry.getDiagnosticInformationQryList().size()])));
 
-            //  TODO:
+            //  TODO:其他实现
 
             //  药品_
         });
@@ -86,18 +97,23 @@ public class MedicalDataSplitExe {
     /**
      * code与药品
      *
-     * @param itemCode
+     * @param drugInformationQry
      * @param drugInformationQryList
      * @return
      */
     private List<MedicalData> buildExternalMedicalRuleData(
-            String itemCode,
+            DrugInformationQry drugInformationQry,
+            MedicalRuleItemEnum medicalRuleItemEnum,
             DrugInformationQry... drugInformationQryList) {
 
         List<MedicalData> data = new ArrayList<>();
 
         Arrays.asList(drugInformationQryList).forEach(x -> {
-            data.add(buildExternalMedicalRule(itemCode, x.getCode()));
+            if (StringUtils.isEmpty(drugInformationQry.getMeasure())
+                    || StringUtils.isEmpty(x.getMeasure())) {
+                return;
+            }
+            data.add(buildDrugProportionMedicalRuleData(drugInformationQry, x, medicalRuleItemEnum));
         });
 
         return data;
@@ -112,22 +128,41 @@ public class MedicalDataSplitExe {
      */
     private List<MedicalData> buildExternalMedicalRuleData(
             String itemCode,
+            MedicalRuleItemEnum medicalRuleItemEnum,
             DiagnosticInformationQry... diagnosticInformationQryList) {
 
         List<MedicalData> data = new ArrayList<>();
 
         Arrays.asList(diagnosticInformationQryList).forEach(x -> {
-            data.add(buildExternalMedicalRule(itemCode, x.getCode()));
+            data.add(buildExternalMedicalRule(itemCode, x.getCode(), medicalRuleItemEnum));
         });
 
         return data;
     }
 
-    private ExternalMedicalRuleData buildExternalMedicalRule(String itemCode, String relatedItemCode) {
+    private DrugProportionMedicalRuleData buildDrugProportionMedicalRuleData(
+            DrugInformationQry drugInformationQry,
+            DrugInformationQry relatedDrugInformationQry,
+            MedicalRuleItemEnum medicalRuleItemEnum) {
+
+        DrugProportionMedicalRuleData drugProportionMedicalRuleData = new DrugProportionMedicalRuleData();
+        drugProportionMedicalRuleData.setItemCode(drugInformationQry.getCode());
+        drugProportionMedicalRuleData.setItemMeasure(drugInformationQry.getMeasure());
+        drugProportionMedicalRuleData.setRelatedItemCode(relatedDrugInformationQry.getCode());
+        drugProportionMedicalRuleData.setRelatedItemMeasure(relatedDrugInformationQry.getMeasure());
+
+        drugProportionMedicalRuleData.setLimitType(medicalRuleItemEnum.name());
+        return drugProportionMedicalRuleData;
+    }
+
+    private ExternalMedicalRuleData buildExternalMedicalRule(
+            String itemCode,
+            String relatedItemCode,
+            MedicalRuleItemEnum medicalRuleItemEnum) {
         ExternalMedicalRuleData externalMedicalRuleData = new ExternalMedicalRuleData();
         externalMedicalRuleData.setItemCode(itemCode);
         externalMedicalRuleData.setRelatedItemCode(relatedItemCode);
-
+        externalMedicalRuleData.setLimitType(medicalRuleItemEnum.name());
         return externalMedicalRuleData;
     }
 

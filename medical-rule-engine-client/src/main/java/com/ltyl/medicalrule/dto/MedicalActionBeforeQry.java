@@ -22,12 +22,12 @@ public class MedicalActionBeforeQry {
     /***
      * 医嘱信息
      */
-    private List<MedicalOrderInformationQry> medicalOrderInformationQry;
+    private List<MedicalOrderInformationQry> medicalOrderInformationQryList;
 
     /**
      * 诊断信息
      */
-    private List<DiagnosticInformationQry> diagnosticInformationQry;
+    private List<DiagnosticInformationQry> diagnosticInformationQryList;
 
     /**
      * 药品信息

@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
 
 /**
  * @author yuchengyao
@@ -92,7 +93,14 @@ public class MedicalRuleCacheDao implements InitializingBean {
         }
 
         if (StringUtils.isEmpty(externalMedicalRuleCache.get(code).get(relatedItemCode))) {
-            return new ExternalMedicalRule();
+
+            ExternalMedicalRule receiptMessageExternalMedicalRule = externalMedicalRuleCache.get(code).get(externalMedicalRuleCache.get(code).keySet().stream().collect(Collectors.toList()).get(0));
+
+            ExternalMedicalRule externalMedicalRule = new ExternalMedicalRule();
+            externalMedicalRule.setItemCode(code);
+            externalMedicalRule.setReceiptMessage(receiptMessageExternalMedicalRule.getReceiptMessage());
+
+            return externalMedicalRule;
         }
         return externalMedicalRuleCache.get(code).get(relatedItemCode);
     }

@@ -6,6 +6,8 @@ import com.ltyl.medicalrule.dto.MedicalActionBeforeQry;
 import com.ltyl.medicalrule.dto.clientobject.MedicalActionBeforeCO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -26,8 +28,8 @@ public class MedicalRuleController {
      * @param medicalActionBeforeQry
      * @return
      */
-    @GetMapping("medical-action-before")
-    public MultiResponse<MedicalActionBeforeCO> beforeMedicalAction(@Valid MedicalActionBeforeQry medicalActionBeforeQry) {
+    @PostMapping("medical-action-before")
+    public MultiResponse<MedicalActionBeforeCO> beforeMedicalAction(@Valid @RequestBody MedicalActionBeforeQry medicalActionBeforeQry) {
         return medicalRuleService.beforeMedicalAction(medicalActionBeforeQry);
     }
 
@@ -35,7 +37,7 @@ public class MedicalRuleController {
     /**
      * 医疗动作之前的请求（事中）
      */
-    @GetMapping("medical-action-doing")
+    @PostMapping("medical-action-doing")
     public MultiResponse<Object> doingMedicalAction() {
 
         return MultiResponse.buildSuccess();
@@ -44,7 +46,7 @@ public class MedicalRuleController {
     /**
      * 医疗动作之前的请求（事后）
      */
-    @GetMapping("medical-action-after")
+    @PostMapping("medical-action-after")
     public MultiResponse<Object> afterMedicalAction() {
 
         return MultiResponse.buildSuccess();

@@ -10,4 +10,18 @@ import lombok.Data;
 @Data
 public class MedicalActionBeforeCO extends MedicalActionCO {
 
+    /**
+     * 项目code
+     */
+    private String itemCode;
+
+    /**
+     * 相关项目code
+     */
+    private String relatedItemCode;
+
+    /**
+     * 回执消息
+     */
+    private String receiptMessage;
 }

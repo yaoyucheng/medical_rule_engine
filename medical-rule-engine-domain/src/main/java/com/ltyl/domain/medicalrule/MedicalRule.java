@@ -2,6 +2,8 @@ package com.ltyl.domain.medicalrule;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 医疗规则领域模型
  *
@@ -19,4 +21,9 @@ public abstract class MedicalRule implements Handleable {
      * 回执消息
      */
     private String receiptMessage;
+
+    @Override
+    public List<MedicalRuleResult> dealWithMedicalRuleResult(List<MedicalRuleResult> medicalRuleResultList) {
+        return medicalRuleResultList;
+    }
 }
