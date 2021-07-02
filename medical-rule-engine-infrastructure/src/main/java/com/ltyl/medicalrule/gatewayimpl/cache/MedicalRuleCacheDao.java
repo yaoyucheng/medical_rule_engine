@@ -5,6 +5,8 @@ import com.ltyl.domain.medicalrule.MedicalRule;
 import com.ltyl.domain.medicalrule.MedicalRuleDistributionHandler;
 import com.ltyl.domain.medicalrule.external.DrugProportionMedicalRule;
 import com.ltyl.domain.medicalrule.external.ExternalMedicalRule;
+import com.ltyl.domain.medicalrule.external.MedicalProjectMedicalRule;
+import com.ltyl.domain.medicalrule.init.MedicalRuleInitData;
 import com.ltyl.domain.medicalrule.internal.AgeMedicalRule;
 import com.ltyl.domain.medicalrule.internal.DrugMeasureMedicalRule;
 import com.ltyl.domain.medicalrule.internal.DurationMedicalRule;
@@ -221,6 +223,11 @@ public class MedicalRuleCacheDao implements InitializingBean {
 
     private void buildMedicalRule(MedicalRule medicalRule, MedicalRuleDO medicalRuleDO) {
 
+        if (medicalRule instanceof MedicalProjectMedicalRule) {
+            buildMedicalProjectMedicalRuleCache(medicalRuleDO);
+            return;
+        }
+
         if (medicalRule instanceof ExternalMedicalRule) {
             buildExternalMedicalRuleCache(medicalRuleDO);
             return;
@@ -265,6 +272,22 @@ public class MedicalRuleCacheDao implements InitializingBean {
 
         ConcurrentHashMap<String, ExternalMedicalRule> data = new ConcurrentHashMap<>();
         data.put(medicalRuleDO.getRelatedItemCode(), externalMedicalRule);
+        externalMedicalRuleCache.put(medicalRuleDO.getItemCode(), data);
+    }
+
+
+    private void buildMedicalProjectMedicalRuleCache(MedicalRuleDO medicalRuleDO) {
+        if (externalMedicalRuleCache.containsKey(medicalRuleDO.getItemCode())) {
+            MedicalProjectMedicalRule medicalProjectMedicalRule = new MedicalProjectMedicalRule();
+            BeanUtils.copyProperties(medicalRuleDO, medicalProjectMedicalRule);
+            externalMedicalRuleCache.get(medicalRuleDO.getItemCode()).put(medicalRuleDO.getRelatedItemCode(), medicalProjectMedicalRule);
+            return;
+        }
+        MedicalProjectMedicalRule medicalProjectMedicalRule = new MedicalProjectMedicalRule();
+        BeanUtils.copyProperties(medicalRuleDO, medicalProjectMedicalRule);
+
+        ConcurrentHashMap<String, ExternalMedicalRule> data = new ConcurrentHashMap<>();
+        data.put(medicalRuleDO.getRelatedItemCode(), medicalProjectMedicalRule);
         externalMedicalRuleCache.put(medicalRuleDO.getItemCode(), data);
     }
 

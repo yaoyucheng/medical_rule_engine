@@ -3,6 +3,7 @@ package com.ltyl.domain.medicalrule;
 import com.alibaba.cola.exception.BizException;
 import com.ltyl.domain.medicalrule.external.DrugProportionMedicalRule;
 import com.ltyl.domain.medicalrule.external.ExternalMedicalRule;
+import com.ltyl.domain.medicalrule.external.MedicalProjectMedicalRule;
 import com.ltyl.domain.medicalrule.internal.AgeMedicalRule;
 import com.ltyl.domain.medicalrule.internal.DrugMeasureMedicalRule;
 import com.ltyl.domain.medicalrule.internal.DurationMedicalRule;
@@ -17,11 +18,13 @@ public class MedicalRuleDistributionHandler {
 
         if (MedicalRuleItemEnum.DRUG_DIAGNOSTIC.name().equals(limitType)
                 || MedicalRuleItemEnum.DRUG_MEDICAL_ORDER.name().equals(limitType)
-                || MedicalRuleItemEnum.DRUG_MEDICAL_ORDER.name().equals(limitType)
                 || MedicalRuleItemEnum.MEDICAL_PROJECT_DIAGNOSTIC.name().equals(limitType)
-                || MedicalRuleItemEnum.MEDICAL_PROJECT_MEDICAL_ORDER.name().equals(limitType)
-                || MedicalRuleItemEnum.MEDICAL_PROJECT_MEDICAL_PROJECT.name().equals(limitType)) {
+                || MedicalRuleItemEnum.MEDICAL_PROJECT_MEDICAL_ORDER.name().equals(limitType)) {
             return new ExternalMedicalRule();
+        }
+
+        if (MedicalRuleItemEnum.MEDICAL_PROJECT_MEDICAL_PROJECT.name().equals(limitType)) {
+            return new MedicalProjectMedicalRule();
         }
 
         if (MedicalRuleItemEnum.DRUG_DRUG_PROPORTION.name().equals(limitType)) {

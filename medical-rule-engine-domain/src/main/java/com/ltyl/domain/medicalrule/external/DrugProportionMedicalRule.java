@@ -1,9 +1,11 @@
 package com.ltyl.domain.medicalrule.external;
 
 import com.alibaba.cola.exception.ExceptionFactory;
+import com.ltyl.domain.medicalrule.MedicalRule;
 import com.ltyl.domain.medicalrule.MedicalRuleResult;
 import com.ltyl.domain.medicalrule.data.DrugProportionMedicalRuleData;
 import com.ltyl.domain.medicalrule.data.MedicalData;
+import com.ltyl.domain.medicalrule.init.MedicalRuleInitData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -65,4 +67,5 @@ public class DrugProportionMedicalRule extends ExternalMedicalRule {
                 this.getReceiptMessage(),
                 medicalData.getLimitType());
     }
+
 }

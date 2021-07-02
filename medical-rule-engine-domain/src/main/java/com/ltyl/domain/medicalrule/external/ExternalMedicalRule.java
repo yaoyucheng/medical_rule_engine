@@ -5,6 +5,7 @@ import com.ltyl.domain.medicalrule.MedicalRule;
 import com.ltyl.domain.medicalrule.MedicalRuleResult;
 import com.ltyl.domain.medicalrule.data.ExternalMedicalRuleData;
 import com.ltyl.domain.medicalrule.data.MedicalData;
+import com.ltyl.domain.medicalrule.init.MedicalRuleInitData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -79,6 +80,10 @@ public class ExternalMedicalRule extends MedicalRule {
     @Override
     public List<MedicalRuleResult> dealWithMedicalRuleResult(List<MedicalRuleResult> medicalRuleResultList) {
 
+        if (this instanceof ExternalMedicalRule) {
+            return super.dealWithMedicalRuleResult(medicalRuleResultList);
+        }
+
         List<MedicalRuleResult> results = new ArrayList<>();
 
         Map<String, List<MedicalRuleResult>> collect = medicalRuleResultList.stream().collect(Collectors.groupingBy(MedicalRuleResult::getItemCode));
@@ -101,4 +106,5 @@ public class ExternalMedicalRule extends MedicalRule {
 
         return results;
     }
+
 }
