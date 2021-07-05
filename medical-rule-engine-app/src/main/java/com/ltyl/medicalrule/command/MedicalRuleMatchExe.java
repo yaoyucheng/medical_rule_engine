@@ -36,7 +36,6 @@ public class MedicalRuleMatchExe {
     }
 
     private MedicalRuleResult dealWith(MedicalData medicalData) {
-        String itemCode = medicalData.getItemCode();
 
         MedicalRule medicalRule = null;
 
@@ -45,14 +44,15 @@ public class MedicalRuleMatchExe {
 
             ExternalMedicalRuleData externalMedicalRuleData = (ExternalMedicalRuleData) medicalData;
 
-            medicalRule = medicalRuleGateway.getExternalMedicalRule(itemCode, externalMedicalRuleData.getRelatedItemCode());
+            medicalRule = medicalRuleGateway.getMedicalRule(medicalData.getLimitType(), medicalData.getItemCode(), externalMedicalRuleData.getRelatedItemCode());
+        }else{
+            medicalRule = medicalRuleGateway.getMedicalRule(medicalData.getLimitType(), medicalData.getItemCode());
         }
 
-        //  TODO: 其他类型
 
         //  错误
         if (StringUtils.isEmpty(medicalRule)) {
-            throw ExceptionFactory.bizException("MedicalData type error");
+            throw ExceptionFactory.bizException("MedicalData type error......");
         }
 
         return medicalRule.dealWithItem(medicalData);

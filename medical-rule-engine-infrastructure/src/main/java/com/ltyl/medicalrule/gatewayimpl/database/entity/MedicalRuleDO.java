@@ -7,6 +7,7 @@ import cn.org.atool.fluent.mybatis.base.IEntity;
 import cn.org.atool.fluent.mybatis.base.RichEntity;
 import java.io.Serializable;
 import java.lang.Class;
+import java.lang.Integer;
 import java.lang.Override;
 import java.lang.String;
 import java.math.BigDecimal;
@@ -50,6 +51,12 @@ public class MedicalRuleDO extends RichEntity {
   private Date createTime;
 
   /**
+   * 性别
+   */
+  @TableField("gender")
+  private String gender;
+
+  /**
    * 项目code
    */
   @TableField("item_code")
@@ -72,6 +79,18 @@ public class MedicalRuleDO extends RichEntity {
    */
   @TableField("limit_type")
   private String limitType;
+
+  /**
+   * 年龄上限，包含
+   */
+  @TableField("max_age")
+  private Integer maxAge;
+
+  /**
+   * 年龄下限，包含
+   */
+  @TableField("min_age")
+  private Integer minAge;
 
   /**
    * 限制性用药

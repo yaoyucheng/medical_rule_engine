@@ -53,6 +53,18 @@ public class MedicalRuleResult {
                 .build();
     }
 
+    /**
+     * 违规封装
+     *
+     * @return
+     */
+    public static MedicalRuleResult violation(
+            String itemCode,
+            String receiptMessage,
+            String limitType) {
+        return MedicalRuleResult.violation(itemCode, null, receiptMessage, limitType);
+    }
+
 
     /**
      * 无违规封装
@@ -72,6 +84,19 @@ public class MedicalRuleResult {
                 .limitType(limitType)
                 .violation(false)
                 .build();
+    }
+
+    /**
+     * 无违规封装
+     *
+     * @return
+     */
+    public static MedicalRuleResult noViolation(
+            String itemCode,
+            String receiptMessage,
+            String limitType) {
+
+        return MedicalRuleResult.noViolation(itemCode, null, receiptMessage, limitType);
     }
 
     public static boolean isViolation(MedicalRuleResult medicalRuleResult) {

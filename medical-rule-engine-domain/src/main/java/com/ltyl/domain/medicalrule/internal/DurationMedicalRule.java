@@ -1,9 +1,7 @@
 package com.ltyl.domain.medicalrule.internal;
 
-import com.ltyl.domain.medicalrule.MedicalRule;
 import com.ltyl.domain.medicalrule.MedicalRuleResult;
 import com.ltyl.domain.medicalrule.data.MedicalData;
-import com.ltyl.domain.medicalrule.init.MedicalRuleInitData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

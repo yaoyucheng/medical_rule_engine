@@ -84,9 +84,18 @@
 
 ## 规则需求完计划
 
-|  业务项关系  | 实现 | DB数据结构 | 完成情况 | 
+|  业务项关系  | domain | 规则 | 完成情况 | 
 |  ----  | ----  | ----| ----|
-| 药品_诊断  | ExternalMedicalRule | 数据库反向枚举  | √ |
-| 药品_医嘱  | ExternalMedicalRule | 数据库反向枚举  | √ |
-| 诊疗项目_诊断  | ExternalMedicalRule | 数据库反向枚举  | √ |
-| 诊疗项目_医嘱  | ExternalMedicalRule | 数据库反向枚举  | √ |
+| 药品_诊断  | ExternalMedicalRule | 规则反向枚举  | √ |
+| 药品_药品_比例  | DrugProportionMedicalRule | 规则枚举  |  |
+| 药品_医嘱  | ExternalMedicalRule | 规则反向枚举  | |
+| 药品_计量  | DrugMeasureMedicalRule | 规则枚举  | |
+| 药品_性别  | GenderMedicalRule | 规则枚举  | √ |
+| 药品_时长  | DurationMedicalRule | 规则枚举  |  |
+| 药品_年龄  | AgeMedicalRule | 规则枚举  | √ |
+| 诊疗项目_诊断  | ExternalMedicalRule | 规则反向枚举  | |
+| 诊疗项目_医嘱  | ExternalMedicalRule | 规则反向枚举  | |
+| 诊疗项目_诊疗项目  | MedicalProjectMedicalRule | 规则枚举  | √ |
+| 诊疗项目_时长  | DurationMedicalRule | 规则反向枚举  | |
+| 诊疗项目_年龄  | AgeMedicalRule | 规则反向枚举  | √ |
+| 诊疗项目_性别  | GenderMedicalRule | 规则反向枚举  | √ |

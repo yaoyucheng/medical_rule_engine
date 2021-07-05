@@ -97,4 +97,13 @@ public enum MedicalRuleItemEnum {
     CONSUMABLES,
 
     ;
+
+    public static MedicalRuleItemEnum getMedicalRuleItemEnum(String name) {
+        for (MedicalRuleItemEnum value : MedicalRuleItemEnum.values()) {
+            if (value.name().equals(name)) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

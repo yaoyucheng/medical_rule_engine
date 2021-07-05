@@ -1,7 +1,6 @@
 package com.ltyl.domain.medicalrule;
 
 import com.ltyl.domain.medicalrule.data.MedicalData;
-import com.ltyl.domain.medicalrule.init.MedicalRuleInitData;
 
 import java.util.List;
 

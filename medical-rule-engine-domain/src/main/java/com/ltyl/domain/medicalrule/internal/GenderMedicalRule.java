@@ -1,11 +1,9 @@
 package com.ltyl.domain.medicalrule.internal;
 
-import com.ltyl.domain.medicalrule.MedicalRule;
 import com.ltyl.domain.medicalrule.MedicalRuleResult;
+import com.ltyl.domain.medicalrule.data.GenderMedicalRuleData;
 import com.ltyl.domain.medicalrule.data.MedicalData;
-import com.ltyl.domain.medicalrule.init.MedicalRuleInitData;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,7 +26,23 @@ public class GenderMedicalRule extends InternalMedicalRule {
 
     @Override
     public MedicalRuleResult dealWithItem(MedicalData medicalData) {
-        return null;
+
+        GenderMedicalRuleData genderMedicalRuleData = (GenderMedicalRuleData) medicalData;
+
+        if (this.gender != null
+                && !this.gender.equals(genderMedicalRuleData.getGender())) {
+
+            return MedicalRuleResult.violation(
+                    medicalData.getItemCode(),
+                    this.getReceiptMessage(),
+                    medicalData.getLimitType());
+        }
+
+        //  不违规
+        return MedicalRuleResult.noViolation(
+                medicalData.getItemCode(),
+                this.getReceiptMessage(),
+                medicalData.getLimitType());
     }
 
 }

@@ -1,14 +1,8 @@
 package com.ltyl.medicalrule.command;
 
 import com.ltyl.domain.medicalrule.MedicalRuleItemEnum;
-import com.ltyl.domain.medicalrule.data.DrugProportionMedicalRuleData;
-import com.ltyl.domain.medicalrule.data.ExternalMedicalRuleData;
-import com.ltyl.domain.medicalrule.data.MedicalData;
-import com.ltyl.domain.medicalrule.data.MedicalProjectMedicalRuleData;
-import com.ltyl.medicalrule.dto.DiagnosticInformationQry;
-import com.ltyl.medicalrule.dto.DrugInformationQry;
-import com.ltyl.medicalrule.dto.MedicalActionBeforeQry;
-import com.ltyl.medicalrule.dto.MedicalProjectInformationQry;
+import com.ltyl.domain.medicalrule.data.*;
+import com.ltyl.medicalrule.dto.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -18,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * 上传参数拆分
+ *
  * @author yuchengyao
  */
 @Component
@@ -72,13 +68,15 @@ public class MedicalDataSplitExe {
                                     new DiagnosticInformationQry[medicalActionBeforeQry.getDiagnosticInformationQryList().size()]))
             );
 
-            //  TODO:其他实现
+
             /**
+             *  TODO:药品_医嘱
              * code_code
              * 药品_医嘱
              */
 
             /**
+             * TODO:药品_计量
              * code_measure
              * 药品_计量
              */
@@ -87,16 +85,31 @@ public class MedicalDataSplitExe {
              * code_gender
              * 药品_性别
              */
+            medicalDataList.addAll(
+                    buildGenderMedicalRuleData(
+                            x.getCode(),
+                            MedicalRuleItemEnum.DRUG_GENDER,
+                            medicalActionBeforeQry.getPatientInformationQry()
+                    )
+            );
 
             /**
+             * TODO:药品_时长
              * code_duration
              * 药品_时长
              */
 
             /**
-             * code_age
+             * drug_age
              * 药品_年龄
              */
+            medicalDataList.addAll(
+                    buildAgeMedicalRuleData(
+                            x.getCode(),
+                            MedicalRuleItemEnum.DRUG_AGE,
+                            medicalActionBeforeQry.getPatientInformationQry()
+                    )
+            );
 
         });
 
@@ -118,11 +131,13 @@ public class MedicalDataSplitExe {
         medicalProjectInformationQryList.forEach(x -> {
 
             /**
+             * TODO:诊疗项目_诊断
              * code_code
              * 诊疗项目_诊断
              */
 
             /**
+             *  TODO:诊疗项目_医嘱
              * code_code
              * 诊疗项目_医嘱
              */
@@ -139,20 +154,36 @@ public class MedicalDataSplitExe {
             );
 
             /**
+             * TODO:诊疗项目_时长
              * code_duration
              * 诊疗项目_时长
              */
 
             /**
+             * TODO:诊疗项目_年龄
              * code_age
              * 诊疗项目_年龄
              */
-
+            medicalDataList.addAll(
+                    buildAgeMedicalRuleData(
+                            x.getCode(),
+                            MedicalRuleItemEnum.MEDICAL_PROJECT_AGE,
+                            medicalActionBeforeQry.getPatientInformationQry()
+                    )
+            );
 
             /**
+             * TODO:诊疗项目_性别
              * code_gender
              * 诊疗项目_性别
              */
+            medicalDataList.addAll(
+                    buildGenderMedicalRuleData(
+                            x.getCode(),
+                            MedicalRuleItemEnum.MEDICAL_PROJECT_GENDER,
+                            medicalActionBeforeQry.getPatientInformationQry()
+                    )
+            );
         });
 
         return medicalDataList;
@@ -199,11 +230,62 @@ public class MedicalDataSplitExe {
         List<MedicalData> data = new ArrayList<>();
 
         Arrays.asList(diagnosticInformationQryList).forEach(x -> {
-            data.add(buildExternalMedicalRule(itemCode, x.getCode(), medicalRuleItemEnum));
+            data.add(buildExternalMedicalRuleData(itemCode, x.getCode(), medicalRuleItemEnum));
         });
 
         return data;
     }
+
+    /**
+     * code与性别
+     *
+     * @param itemCode
+     * @param patientInformationQry
+     * @return
+     */
+    private List<MedicalData> buildAgeMedicalRuleData(
+            String itemCode,
+            MedicalRuleItemEnum medicalRuleItemEnum,
+            PatientInformationQry patientInformationQry) {
+
+        List<MedicalData> data = new ArrayList<>();
+
+        AgeMedicalRuleData ageMedicalRuleData = new AgeMedicalRuleData();
+
+        ageMedicalRuleData.setItemCode(itemCode);
+        ageMedicalRuleData.setLimitType(medicalRuleItemEnum.name());
+        ageMedicalRuleData.setAge(patientInformationQry.getAge());
+
+        data.add(ageMedicalRuleData);
+
+        return data;
+    }
+
+    /**
+     * code与诊断
+     *
+     * @param itemCode
+     * @param patientInformationQry
+     * @return
+     */
+    private List<MedicalData> buildGenderMedicalRuleData(
+            String itemCode,
+            MedicalRuleItemEnum medicalRuleItemEnum,
+            PatientInformationQry patientInformationQry) {
+
+        List<MedicalData> data = new ArrayList<>();
+
+        GenderMedicalRuleData genderMedicalRuleData = new GenderMedicalRuleData();
+
+        genderMedicalRuleData.setItemCode(itemCode);
+        genderMedicalRuleData.setLimitType(medicalRuleItemEnum.name());
+        genderMedicalRuleData.setGender(patientInformationQry.getGender());
+
+        data.add(genderMedicalRuleData);
+
+        return data;
+    }
+
 
     /**
      * code与项目
@@ -242,7 +324,7 @@ public class MedicalDataSplitExe {
         return drugProportionMedicalRuleData;
     }
 
-    private ExternalMedicalRuleData buildExternalMedicalRule(
+    private ExternalMedicalRuleData buildExternalMedicalRuleData(
             String itemCode,
             String relatedItemCode,
             MedicalRuleItemEnum medicalRuleItemEnum) {
@@ -253,14 +335,13 @@ public class MedicalDataSplitExe {
         return externalMedicalRuleData;
     }
 
-
     private MedicalProjectMedicalRuleData buildMedicalProjectMedicalRuleData(
             String itemCode,
             String relatedItemCode,
             MedicalRuleItemEnum medicalRuleItemEnum) {
 
         MedicalProjectMedicalRuleData medicalProjectMedicalRuleData = new MedicalProjectMedicalRuleData();
-        ExternalMedicalRuleData externalMedicalRuleData = buildExternalMedicalRule(itemCode, relatedItemCode, medicalRuleItemEnum);
+        ExternalMedicalRuleData externalMedicalRuleData = buildExternalMedicalRuleData(itemCode, relatedItemCode, medicalRuleItemEnum);
         BeanUtils.copyProperties(externalMedicalRuleData, medicalProjectMedicalRuleData);
         return medicalProjectMedicalRuleData;
     }

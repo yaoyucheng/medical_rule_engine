@@ -6,7 +6,6 @@ import com.ltyl.domain.medicalrule.MedicalRuleDistributionHandler;
 import com.ltyl.domain.medicalrule.external.DrugProportionMedicalRule;
 import com.ltyl.domain.medicalrule.external.ExternalMedicalRule;
 import com.ltyl.domain.medicalrule.external.MedicalProjectMedicalRule;
-import com.ltyl.domain.medicalrule.init.MedicalRuleInitData;
 import com.ltyl.domain.medicalrule.internal.AgeMedicalRule;
 import com.ltyl.domain.medicalrule.internal.DrugMeasureMedicalRule;
 import com.ltyl.domain.medicalrule.internal.DurationMedicalRule;
