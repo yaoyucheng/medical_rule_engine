@@ -4,10 +4,7 @@ import com.alibaba.cola.exception.BizException;
 import com.ltyl.domain.medicalrule.external.DrugProportionMedicalRule;
 import com.ltyl.domain.medicalrule.external.ExternalMedicalRule;
 import com.ltyl.domain.medicalrule.external.MedicalProjectMedicalRule;
-import com.ltyl.domain.medicalrule.internal.AgeMedicalRule;
-import com.ltyl.domain.medicalrule.internal.DrugMeasureMedicalRule;
-import com.ltyl.domain.medicalrule.internal.DurationMedicalRule;
-import com.ltyl.domain.medicalrule.internal.GenderMedicalRule;
+import com.ltyl.domain.medicalrule.internal.*;
 
 /**
  * @author yuchengyao
@@ -48,6 +45,14 @@ public class MedicalRuleDistributionHandler {
         if (MedicalRuleItemEnum.DRUG_GENDER.name().equals(limitType)
                 || MedicalRuleItemEnum.MEDICAL_PROJECT_GENDER.name().equals(limitType)) {
             return new GenderMedicalRule();
+        }
+
+        if (MedicalRuleItemEnum.DRUG_LEVEL.name().equals(limitType)) {
+            return new DrugLevelMedicalRule();
+        }
+
+        if (MedicalRuleItemEnum.DRUG_CHINESE.name().equals(limitType)) {
+            return new DrugChineseMedicalRule();
         }
 
         throw new BizException("limitType is error......");

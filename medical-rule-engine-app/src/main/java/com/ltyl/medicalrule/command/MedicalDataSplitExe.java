@@ -111,6 +111,28 @@ public class MedicalDataSplitExe {
                     )
             );
 
+            /**
+             * DrugLevelMedicalRule
+             * 药品_等级
+             */
+            medicalDataList.addAll(
+                    buildDrugLevelMedicalRuleData(
+                            x.getCode(),
+                            MedicalRuleItemEnum.DRUG_LEVEL
+                    )
+            );
+
+            /**
+             * DrugChineseMedicalRule
+             * 中药
+             */
+            medicalDataList.addAll(
+                    buildDrugChineseMedicalRuleData(
+                            x.getCode(),
+                            MedicalRuleItemEnum.DRUG_CHINESE
+                    )
+            );
+
         });
 
         return medicalDataList;
@@ -237,7 +259,7 @@ public class MedicalDataSplitExe {
     }
 
     /**
-     * code与性别
+     * code与年龄
      *
      * @param itemCode
      * @param patientInformationQry
@@ -344,6 +366,51 @@ public class MedicalDataSplitExe {
         ExternalMedicalRuleData externalMedicalRuleData = buildExternalMedicalRuleData(itemCode, relatedItemCode, medicalRuleItemEnum);
         BeanUtils.copyProperties(externalMedicalRuleData, medicalProjectMedicalRuleData);
         return medicalProjectMedicalRuleData;
+    }
+
+    /**
+     * 药品与等级
+     *
+     * @param itemCode
+     * @return
+     */
+    private List<MedicalData> buildDrugLevelMedicalRuleData(
+            String itemCode,
+            MedicalRuleItemEnum medicalRuleItemEnum) {
+
+        List<MedicalData> data = new ArrayList<>();
+
+        DrugLevelMedicalRuleData drugLevelMedicalRuleData = new DrugLevelMedicalRuleData();
+
+        drugLevelMedicalRuleData.setItemCode(itemCode);
+        drugLevelMedicalRuleData.setLimitType(medicalRuleItemEnum.name());
+
+        data.add(drugLevelMedicalRuleData);
+
+        return data;
+    }
+
+
+    /**
+     * 中药
+     *
+     * @param itemCode
+     * @return
+     */
+    private List<MedicalData> buildDrugChineseMedicalRuleData(
+            String itemCode,
+            MedicalRuleItemEnum medicalRuleItemEnum) {
+
+        List<MedicalData> data = new ArrayList<>();
+
+        DrugChineseMedicalRuleData drugChineseMedicalRuleData = new DrugChineseMedicalRuleData();
+
+        drugChineseMedicalRuleData.setItemCode(itemCode);
+        drugChineseMedicalRuleData.setLimitType(medicalRuleItemEnum.name());
+
+        data.add(drugChineseMedicalRuleData);
+
+        return data;
     }
 
 

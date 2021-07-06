@@ -1,5 +1,4 @@
-
-# 医疗规则引擎设计
+# 医疗规则引擎需求文档
 
 ## 相关业务
 
@@ -31,6 +30,8 @@
 
 > 需要参数：药品code，诊断code
 
+> 在药品目录中，部分药品有限制使用条件与诊断相关。
+
 2、药品与计量
 
 > 需要参数：药品code，药品计量
@@ -43,6 +44,8 @@
 
 > 需要参数：药品code，医嘱code
 
+> 在药品目录中，部分药品有限制使用条件与医嘱相关。
+
 5、药品与性别
 
 > 需要参数：药品code，性别code
@@ -54,6 +57,16 @@
 7、药品与住院天数
 
 > 需要参数：药品code，住院天数
+
+8、药品_收费等级
+
+> 需要参数：药品code
+
+9、药品_中药
+
+> 需要参数：药品code
+
+> 要求：中药单独开，算违规
 
 ### 诊疗项目相关业务项关系
 
@@ -81,21 +94,37 @@
 
 > 需要参数：诊疗项目code，住院天数
 
-
 ## 规则需求完计划
+
+### v1.0.0 规则需求
 
 |  业务项关系  | domain | 规则 | 完成情况 | 
 |  ----  | ----  | ----| ----|
 | 药品_诊断  | ExternalMedicalRule | 规则反向枚举  | √ |
-| 药品_药品_比例  | DrugProportionMedicalRule | 规则枚举  |  |
 | 药品_医嘱  | ExternalMedicalRule | 规则反向枚举  | |
-| 药品_计量  | DrugMeasureMedicalRule | 规则枚举  | |
 | 药品_性别  | GenderMedicalRule | 规则枚举  | √ |
 | 药品_时长  | DurationMedicalRule | 规则枚举  |  |
 | 药品_年龄  | AgeMedicalRule | 规则枚举  | √ |
-| 诊疗项目_诊断  | ExternalMedicalRule | 规则反向枚举  | |
-| 诊疗项目_医嘱  | ExternalMedicalRule | 规则反向枚举  | |
+| 药品_收费等级  | DrugLevelMedicalRule | 规则枚举  | √ |
+| 药品_中药  | Chinese medicine... | 聚合  | √ |
 | 诊疗项目_诊疗项目  | MedicalProjectMedicalRule | 规则枚举  | √ |
 | 诊疗项目_时长  | DurationMedicalRule | 规则反向枚举  | |
 | 诊疗项目_年龄  | AgeMedicalRule | 规则枚举  | √ |
 | 诊疗项目_性别  | GenderMedicalRule | 规则枚举  | √ |
+
+### 后续版本规则需求
+
+|  业务项关系  | domain | 规则 | 完成情况 | 
+|  ----  | ----  | ----| ----|
+| 药品_药品_比例  | DrugProportionMedicalRule | 规则枚举  |  |
+| 药品_计量  | DrugMeasureMedicalRule | 规则枚举  | |
+| 诊疗项目_诊断  | ExternalMedicalRule | 规则反向枚举  | |
+| 诊疗项目_医嘱  | ExternalMedicalRule | 规则反向枚举  | |
+
+## 规则数据版本
+
+### 药品_诊断
+
+|  版本  | 时间 | 版本详情 | 源数据文件 | sql文件 | 
+|  ----  | ----  | ----| ----|---|
+| v1.0.0  | 2021年7月6日 |  | | | 

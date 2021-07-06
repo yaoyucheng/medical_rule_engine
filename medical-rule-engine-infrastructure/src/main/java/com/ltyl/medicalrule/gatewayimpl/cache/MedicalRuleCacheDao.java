@@ -6,10 +6,7 @@ import com.ltyl.domain.medicalrule.MedicalRuleDistributionHandler;
 import com.ltyl.domain.medicalrule.external.DrugProportionMedicalRule;
 import com.ltyl.domain.medicalrule.external.ExternalMedicalRule;
 import com.ltyl.domain.medicalrule.external.MedicalProjectMedicalRule;
-import com.ltyl.domain.medicalrule.internal.AgeMedicalRule;
-import com.ltyl.domain.medicalrule.internal.DrugMeasureMedicalRule;
-import com.ltyl.domain.medicalrule.internal.DurationMedicalRule;
-import com.ltyl.domain.medicalrule.internal.GenderMedicalRule;
+import com.ltyl.domain.medicalrule.internal.*;
 import com.ltyl.medicalrule.gatewayimpl.database.dao.intf.MedicalRuleDao;
 import com.ltyl.medicalrule.gatewayimpl.database.entity.MedicalRuleDO;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +61,19 @@ public class MedicalRuleCacheDao implements InitializingBean {
      */
     private static ConcurrentHashMap<String, DurationMedicalRule> durationMedicalRuleCache = new ConcurrentHashMap<>();
 
+    /**
+     * 药品等级
+     */
+    private static ConcurrentHashMap<String, DrugLevelMedicalRule> drugLevelMedicalRuleCache = new ConcurrentHashMap<>();
+
+    /**
+     * 中药
+     */
+    private static ConcurrentHashMap<String, DrugChineseMedicalRule> drugChineseMedicalRuleCache = new ConcurrentHashMap<>();
+
+    /**
+     * --------------------------------------------------------------------------------------------
+     */
 
     /**
      * 初始化线程池，同时执行500个线程
@@ -163,6 +173,29 @@ public class MedicalRuleCacheDao implements InitializingBean {
                 new DurationMedicalRule() : durationMedicalRuleCache.get(code);
     }
 
+    /**
+     * 获取药品等级
+     *
+     * @param code
+     * @return
+     */
+    public DrugLevelMedicalRule getDrugLevelMedicalRule(String code) {
+        return StringUtils.isEmpty(drugLevelMedicalRuleCache.get(code)) ?
+                new DrugLevelMedicalRule() : drugLevelMedicalRuleCache.get(code);
+    }
+
+    /**
+     * 获取药品等级
+     *
+     * @param code
+     * @return
+     */
+    public DrugChineseMedicalRule getDrugChineseMedicalRule(String code) {
+        return StringUtils.isEmpty(drugChineseMedicalRuleCache.get(code)) ?
+                new DrugChineseMedicalRule() : drugChineseMedicalRuleCache.get(code);
+    }
+
+
     @Override
     public void afterPropertiesSet() throws Exception {
         initCache();
@@ -256,6 +289,14 @@ public class MedicalRuleCacheDao implements InitializingBean {
             return;
         }
 
+        if (medicalRule instanceof DrugLevelMedicalRule) {
+            buildDrugLevelMedicalRuleCache(medicalRuleDO);
+            return;
+        }
+
+        if (medicalRule instanceof DrugChineseMedicalRule) {
+            buildDrugChineseMedicalRuleCache(medicalRuleDO);
+        }
 
     }
 
@@ -334,6 +375,24 @@ public class MedicalRuleCacheDao implements InitializingBean {
 
         genderMedicalRuleCache.put(medicalRuleDO.getItemCode(), genderMedicalRule);
     }
+
+
+    private void buildDrugLevelMedicalRuleCache(MedicalRuleDO medicalRuleDO) {
+
+        DrugLevelMedicalRule drugLevelMedicalRule = new DrugLevelMedicalRule();
+        BeanUtils.copyProperties(medicalRuleDO, drugLevelMedicalRule);
+
+        drugLevelMedicalRuleCache.put(medicalRuleDO.getItemCode(), drugLevelMedicalRule);
+    }
+
+    private void buildDrugChineseMedicalRuleCache(MedicalRuleDO medicalRuleDO) {
+
+        DrugChineseMedicalRule drugChineseMedicalRule = new DrugChineseMedicalRule();
+        BeanUtils.copyProperties(medicalRuleDO, drugChineseMedicalRule);
+
+        drugChineseMedicalRuleCache.put(medicalRuleDO.getItemCode(), drugChineseMedicalRule);
+    }
+
 
 }
 

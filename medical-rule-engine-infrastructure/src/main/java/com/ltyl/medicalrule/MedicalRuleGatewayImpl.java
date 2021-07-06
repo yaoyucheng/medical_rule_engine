@@ -5,6 +5,7 @@ import com.ltyl.domain.gateway.MedicalRuleGateway;
 import com.ltyl.domain.medicalrule.MedicalRule;
 import com.ltyl.domain.medicalrule.MedicalRuleItemEnum;
 import com.ltyl.medicalrule.gatewayimpl.cache.MedicalRuleCacheDao;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -14,6 +15,7 @@ import javax.annotation.Resource;
  *
  * @author yuchengyao
  */
+@Slf4j
 @Component
 public class MedicalRuleGatewayImpl implements MedicalRuleGateway {
 
@@ -30,32 +32,38 @@ public class MedicalRuleGatewayImpl implements MedicalRuleGateway {
 
         switch (medicalRuleItemEnum) {
             case DRUG_DIAGNOSTIC:
-                return getExternalMedicalRule(code, relatedItemCode);
+                return medicalRuleCacheDao.getExternalMedicalRule(code, relatedItemCode);
             case DRUG_AGE:
-                return getAgeMedicalRule(code);
+                return medicalRuleCacheDao.getAgeMedicalRule(code);
             case DRUG_GENDER:
-                return getGenderMedicalRule(code);
+                return medicalRuleCacheDao.getGenderMedicalRule(code);
             case DRUG_MEASURE:
-                return getDrugMeasureMedicalRule(code);
+                return medicalRuleCacheDao.getDrugMeasureMedicalRule(code);
             case DRUG_DURATION:
-                return getDurationMedicalRule(code);
+                return medicalRuleCacheDao.getDurationMedicalRule(code);
             case DRUG_MEDICAL_ORDER:
-                return getExternalMedicalRule(code, relatedItemCode);
+                return medicalRuleCacheDao.getExternalMedicalRule(code, relatedItemCode);
             case DRUG_DRUG_PROPORTION:
-                return getDrugProportionMedicalRule(code);
+                return medicalRuleCacheDao.getDrugProportionMedicalRule(code);
+            case DRUG_LEVEL:
+                return medicalRuleCacheDao.getDrugLevelMedicalRule(code);
+            case DRUG_CHINESE:
+                return medicalRuleCacheDao.getDrugChineseMedicalRule(code);
 
             case MEDICAL_PROJECT_AGE:
-                return getAgeMedicalRule(code);
+                return medicalRuleCacheDao.getAgeMedicalRule(code);
             case MEDICAL_PROJECT_GENDER:
-                return getGenderMedicalRule(code);
+                return medicalRuleCacheDao.getGenderMedicalRule(code);
             case MEDICAL_PROJECT_DURATION:
-                return getDurationMedicalRule(code);
+                return medicalRuleCacheDao.getDurationMedicalRule(code);
             case MEDICAL_PROJECT_MEDICAL_ORDER:
-                return getExternalMedicalRule(code, relatedItemCode);
+                return medicalRuleCacheDao.getExternalMedicalRule(code, relatedItemCode);
             case MEDICAL_PROJECT_MEDICAL_PROJECT:
-                return getExternalMedicalRule(code, relatedItemCode);
+                return medicalRuleCacheDao.getExternalMedicalRule(code, relatedItemCode);
             case MEDICAL_PROJECT_DIAGNOSTIC:
-                return getExternalMedicalRule(code, relatedItemCode);
+                return medicalRuleCacheDao.getExternalMedicalRule(code, relatedItemCode);
+            default:
+                log.info("调用异常......");
         }
         throw ExceptionFactory.bizException("limitType is error......");
     }
@@ -64,65 +72,5 @@ public class MedicalRuleGatewayImpl implements MedicalRuleGateway {
     public MedicalRule getMedicalRule(String limitType, String code) {
         return getMedicalRule(limitType, code, null);
     }
-
-    /**
-     * @param itemCode
-     * @param relatedItemCode
-     * @return
-     */
-    public MedicalRule getExternalMedicalRule(String itemCode, String relatedItemCode) {
-        return medicalRuleCacheDao.getExternalMedicalRule(itemCode, relatedItemCode);
-    }
-
-    /**
-     * 获取 药品_药品_比例  的规则
-     *
-     * @param code
-     * @return
-     */
-    public MedicalRule getDrugProportionMedicalRule(String code) {
-        return medicalRuleCacheDao.getDrugProportionMedicalRule(code);
-    }
-
-    /**
-     * 获取年龄规则
-     *
-     * @param code
-     * @return
-     */
-    public MedicalRule getAgeMedicalRule(String code) {
-        return medicalRuleCacheDao.getAgeMedicalRule(code);
-    }
-
-    /**
-     * 获取性别规则
-     *
-     * @param code
-     * @return
-     */
-    public MedicalRule getGenderMedicalRule(String code) {
-        return medicalRuleCacheDao.getGenderMedicalRule(code);
-    }
-
-    /**
-     * 药品计量规则
-     *
-     * @param code
-     * @return
-     */
-    public MedicalRule getDrugMeasureMedicalRule(String code) {
-        return medicalRuleCacheDao.getDrugMeasureMedicalRule(code);
-    }
-
-    /**
-     * 获取时长规则
-     *
-     * @param code
-     * @return
-     */
-    public MedicalRule getDurationMedicalRule(String code) {
-        return medicalRuleCacheDao.getDurationMedicalRule(code);
-    }
-
 
 }

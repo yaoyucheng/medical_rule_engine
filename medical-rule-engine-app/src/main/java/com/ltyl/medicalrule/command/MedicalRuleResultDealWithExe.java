@@ -39,7 +39,6 @@ public class MedicalRuleResultDealWithExe {
             results.addAll(handler.dealWithMedicalRuleResult(value));
         });
 
-        //  去重操作
         return results;
     }
 }
