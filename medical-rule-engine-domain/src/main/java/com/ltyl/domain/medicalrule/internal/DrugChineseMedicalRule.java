@@ -42,7 +42,7 @@ public class DrugChineseMedicalRule extends InternalMedicalRule {
 
         List<MedicalRuleResult> medicalRuleResults = new ArrayList<>();
 
-        if (results.size() == 1) {
+        if (results != null && results.size() == 1) {
             medicalRuleResults.add(results.get(0));
         }
 

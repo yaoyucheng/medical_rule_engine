@@ -83,7 +83,7 @@ public class MedicalRuleCacheDao implements InitializingBean {
     /**
      * 多线程处理code 数量
      */
-    private static Integer executorCount = 500;
+    private static Integer executorCount = 100;
 
     /**
      * 数据库实现
@@ -103,7 +103,7 @@ public class MedicalRuleCacheDao implements InitializingBean {
             return new ExternalMedicalRule();
         }
 
-        if (StringUtils.isEmpty(externalMedicalRuleCache.get(code).get(relatedItemCode))) {
+        if (StringUtils.isEmpty(externalMedicalRuleCache.get(code)) || StringUtils.isEmpty(relatedItemCode)) {
 
             ExternalMedicalRule receiptMessageExternalMedicalRule = externalMedicalRuleCache.get(code).get(externalMedicalRuleCache.get(code).keySet().stream().collect(Collectors.toList()).get(0));
 

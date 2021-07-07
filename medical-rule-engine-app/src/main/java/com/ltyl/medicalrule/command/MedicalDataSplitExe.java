@@ -251,9 +251,14 @@ public class MedicalDataSplitExe {
 
         List<MedicalData> data = new ArrayList<>();
 
-        Arrays.asList(diagnosticInformationQryList).forEach(x -> {
-            data.add(buildExternalMedicalRuleData(itemCode, x.getCode(), medicalRuleItemEnum));
-        });
+        if (diagnosticInformationQryList.length == 0) {
+            data.add(buildExternalMedicalRuleData(itemCode, null, medicalRuleItemEnum));
+        }else{
+            Arrays.asList(diagnosticInformationQryList).forEach(x -> {
+                data.add(buildExternalMedicalRuleData(itemCode, x.getCode(), medicalRuleItemEnum));
+            });
+        }
+
 
         return data;
     }

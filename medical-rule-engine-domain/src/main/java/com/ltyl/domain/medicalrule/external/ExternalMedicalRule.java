@@ -47,7 +47,7 @@ public class ExternalMedicalRule extends MedicalRule {
 
         ExternalMedicalRuleData externalMedicalRuleData = (ExternalMedicalRuleData) medicalData;
 
-        if (this.getItemCode() == null) {
+        if (this.getItemCode() == null && externalMedicalRuleData.getRelatedItemCode() != null) {
             //  在缓存中没有找到项目，不违规
             return MedicalRuleResult.noViolation(
                     externalMedicalRuleData.getItemCode(),
@@ -79,7 +79,7 @@ public class ExternalMedicalRule extends MedicalRule {
     @Override
     public List<MedicalRuleResult> dealWithMedicalRuleResult(List<MedicalRuleResult> medicalRuleResultList) {
 
-        if (this instanceof ExternalMedicalRule) {
+        if (!(this instanceof ExternalMedicalRule)) {
             return super.dealWithMedicalRuleResult(medicalRuleResultList);
         }
 
